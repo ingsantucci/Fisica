@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- V37 — voce di prova della Fase 0b: contenuti PROVVISORI (P-7, § 6).
+     Valida la formula vettoriale (§ 5.6), il blocco FIGURA con SVG ridisegnato
+     (§ 5.7, § 5.4) e il breadcrumb con elisione «…» (nodo alla profondità
+     massima del ramo). Il testo definitivo si scrive in Fase 1 (Cowork). -->
+<title>Il metodo del parallelogramma — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">Il metodo del parallelogramma</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Accanto al <em>metodo punta-coda</em>, la somma grafica di due vettori
+    si può eseguire facendoli partire dallo <strong>stesso punto</strong>: è il
+    metodo del parallelogramma, particolarmente naturale quando i due vettori
+    rappresentano azioni simultanee, come due forze applicate allo stesso
+    corpo.</p>
+
+    <div class="definizione">
+      <p>Dati due vettori <span class="matematica">\( \vec{a} \)</span> e
+      <span class="matematica">\( \vec{b} \)</span> applicati nello stesso
+      punto, si costruisce il parallelogramma che ha i due vettori come lati:
+      il vettore somma è la <strong>diagonale</strong> uscente dal punto di
+      applicazione comune.</p>
+    </div>
+
+    <div class="formula">
+      \[ \vec{s} = \vec{a} + \vec{b} \]
+    </div>
+
+    <figure class="figura">
+      <svg viewBox="0 0 360 230" width="420" role="img"
+           aria-label="Costruzione del parallelogramma: due vettori dallo stesso punto e la diagonale come somma">
+        <defs>
+          <marker id="freccia-blu" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#155e8a"/>
+          </marker>
+          <marker id="freccia-ruggine" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b3541e"/>
+          </marker>
+        </defs>
+        <!-- lati costruiti (tratteggio) -->
+        <line x1="250" y1="190" x2="330" y2="70" stroke="#8aa2b5"
+              stroke-width="1.5" stroke-dasharray="6 5"/>
+        <line x1="120" y1="70" x2="330" y2="70" stroke="#8aa2b5"
+              stroke-width="1.5" stroke-dasharray="6 5"/>
+        <!-- vettori a e b dallo stesso punto di applicazione -->
+        <line x1="40" y1="190" x2="250" y2="190" stroke="#155e8a"
+              stroke-width="2.5" marker-end="url(#freccia-blu)"/>
+        <line x1="40" y1="190" x2="120" y2="70" stroke="#155e8a"
+              stroke-width="2.5" marker-end="url(#freccia-blu)"/>
+        <!-- diagonale: vettore somma -->
+        <line x1="40" y1="190" x2="330" y2="70" stroke="#b3541e"
+              stroke-width="3" marker-end="url(#freccia-ruggine)"/>
+        <!-- etichette (freccia del vettore disegnata, non carattere combinante) -->
+        <text x="145" y="215" font-style="italic" font-size="20"
+              fill="#155e8a">a</text>
+        <path d="M 144 199 h 14 m -4 -3 l 4 3 l -4 3" fill="none"
+              stroke="#155e8a" stroke-width="1.5"/>
+        <text x="55" y="120" font-style="italic" font-size="20"
+              fill="#155e8a">b</text>
+        <path d="M 54 102 h 14 m -4 -3 l 4 3 l -4 3" fill="none"
+              stroke="#155e8a" stroke-width="1.5"/>
+        <text x="185" y="115" font-style="italic" font-size="22"
+              fill="#b3541e">s</text>
+        <path d="M 184 97 h 15 m -4 -3 l 4 3 l -4 3" fill="none"
+              stroke="#b3541e" stroke-width="1.7"/>
+        <circle cx="40" cy="190" r="3.5" fill="#1c2733"/>
+      </svg>
+      <figcaption>I vettori \( \vec{a} \) e \( \vec{b} \) escono dallo stesso
+      punto; la diagonale del parallelogramma è la somma \( \vec{s} \).
+      (SVG ridisegnato ex novo, § 5.4 — figura provvisoria.)</figcaption>
+    </figure>
+
+    <div class="esempio">
+      <p>Due forze <span class="matematica">\( \vec{F}_1 \)</span> e
+      <span class="matematica">\( \vec{F}_2 \)</span> di modulo
+      <span class="matematica">\( 3\,\mathrm{N} \)</span> e
+      <span class="matematica">\( 4\,\mathrm{N} \)</span>, perpendicolari tra
+      loro, applicate allo stesso punto: la diagonale del rettangolo che le ha
+      per lati ha modulo <span class="matematica">\( 5\,\mathrm{N} \)</span> —
+      il metodo del parallelogramma dà lo stesso risultato del punta-coda.</p>
+    </div>
+
+    <p>Il risultato coincide sempre con quello del <em>metodo punta-coda</em>:
+    sono due costruzioni diverse della stessa somma grafica.</p>
+
+  </div>
+
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>

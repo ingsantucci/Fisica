@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La proporzionalità diretta — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">La proporzionalità diretta</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Fra le relazioni che legano due grandezze misurate, la proporzionalità
+    diretta è la più semplice e la più frequente. Il caso da cui conviene
+    partire è geometrico: il lato di un triangolo equilatero e il suo
+    perimetro.</p>
+
+    <div class="tabella">
+      <table>
+        <caption>Lato e perimetro di alcuni triangoli equilateri.</caption>
+        <thead>
+          <tr>
+            <th>lato <span class="matematica">\( x \)</span> (cm)</th>
+            <th>perimetro <span class="matematica">\( y \)</span> (cm)</th>
+            <th><span class="matematica">\( y/x \)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>3</th><td>9</td><td>\( 9/3 = 3 \)</td></tr>
+          <tr><th>6</th><td>18</td><td>\( 18/6 = 3 \)</td></tr>
+          <tr><th>9</th><td>27</td><td>\( 27/9 = 3 \)</td></tr>
+          <tr><th>12</th><td>36</td><td>\( 36/12 = 3 \)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>I due valori cambiano da riga a riga, ma il loro <em>rapporto</em> resta
+    lo stesso. È questa costanza a definire la relazione.</p>
+
+    <div class="definizione">
+      <p>Due grandezze si dicono <strong>direttamente proporzionali</strong>
+      se il loro rapporto è costante.</p>
+    </div>
+
+    <div class="formula">
+      \[ \frac{y}{x} = k \qquad\text{da cui}\qquad y = k \cdot x \]
+      <p class="formula-nota">La costante <span class="matematica">\( k \)</span>
+      è detta costante di proporzionalità; nell'esempio del triangolo vale
+      <span class="matematica">\( 3 \)</span>.</p>
+    </div>
+
+    <h2>Una seconda lettura: come variano insieme</h2>
+
+    <p>Guardando la tabella per righe successive si vede che al raddoppiare del
+    lato raddoppia il perimetro, al triplicare del lato triplica il perimetro.
+    Questa proprietà fornisce una definizione equivalente alla prima.</p>
+
+    <div class="definizione">
+      <p>Due grandezze sono <strong>direttamente proporzionali</strong> se
+      raddoppiando, triplicando ecc. l'una, anche l'altra raddoppia, triplica
+      ecc.; e se una si riduce a metà o a un terzo, altrettanto fa l'altra.</p>
+    </div>
+
+    <h2>La rappresentazione grafica</h2>
+
+    <p>Riportando le coppie di valori su un sistema di assi cartesiani — il
+    lato sulle ascisse, il perimetro sulle ordinate — i punti si dispongono
+    lungo una retta che passa per l'origine.</p>
+
+    <figure class="figura figura--grafico">
+      <svg viewBox="0 0 420 300" width="460" role="img"
+           aria-label="Grafico cartesiano: i punti (3;9), (6;18), (9;27), (12;36) allineati su una retta passante per l'origine">
+        <defs>
+          <marker id="punta-asse" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1c2733"/>
+          </marker>
+        </defs>
+
+        <!-- linee di lettura -->
+        <g stroke="#8aa2b5" stroke-width="1.2" stroke-dasharray="5 5">
+          <line x1="135" y1="250" x2="135" y2="200"/><line x1="60" y1="200" x2="135" y2="200"/>
+          <line x1="210" y1="250" x2="210" y2="150"/><line x1="60" y1="150" x2="210" y2="150"/>
+          <line x1="285" y1="250" x2="285" y2="100"/><line x1="60" y1="100" x2="285" y2="100"/>
+          <line x1="360" y1="250" x2="360" y2="50"/><line x1="60" y1="50" x2="360" y2="50"/>
+        </g>
+
+        <!-- assi -->
+        <line x1="60" y1="250" x2="400" y2="250" stroke="#1c2733"
+              stroke-width="2" marker-end="url(#punta-asse)"/>
+        <line x1="60" y1="250" x2="60" y2="25" stroke="#1c2733"
+              stroke-width="2" marker-end="url(#punta-asse)"/>
+
+        <!-- retta -->
+        <line x1="60" y1="250" x2="378" y2="38" stroke="#b3541e" stroke-width="3"/>
+
+        <!-- punti -->
+        <g fill="#155e8a">
+          <circle cx="135" cy="200" r="5"/>
+          <circle cx="210" cy="150" r="5"/>
+          <circle cx="285" cy="100" r="5"/>
+          <circle cx="360" cy="50" r="5"/>
+        </g>
+
+        <!-- tacche e numeri -->
+        <g font-size="15" fill="#1c2733" text-anchor="middle">
+          <text x="135" y="272">3</text>
+          <text x="210" y="272">6</text>
+          <text x="285" y="272">9</text>
+          <text x="360" y="272">12</text>
+        </g>
+        <g font-size="15" fill="#1c2733" text-anchor="end">
+          <text x="52" y="205">9</text>
+          <text x="52" y="155">18</text>
+          <text x="52" y="105">27</text>
+          <text x="52" y="55">36</text>
+        </g>
+        <text x="52" y="268" font-size="15" fill="#1c2733" text-anchor="end">O</text>
+
+        <!-- etichette degli assi -->
+        <text x="400" y="285" font-size="15" fill="#1c2733" text-anchor="end">lato (cm)</text>
+        <text x="72" y="20" font-size="15" fill="#1c2733">perimetro (cm)</text>
+      </svg>
+      <figcaption>I punti della tabella allineati su una retta uscente
+      dall'origine: è la firma grafica della proporzionalità diretta.</figcaption>
+    </figure>
+
+    <div class="definizione">
+      <p>La rappresentazione grafica di due grandezze direttamente
+      proporzionali è una <strong>retta passante per l'origine</strong>.</p>
+    </div>
+
+    <p>La costante <span class="matematica">\( k \)</span> si legge anche sul
+    grafico: è la <strong>pendenza</strong> della retta. Rette più inclinate
+    corrispondono a valori di <span class="matematica">\( k \)</span> più
+    grandi, e per ricavarla basta scegliere un punto qualsiasi della retta e
+    calcolarne il rapporto <span class="matematica">\( y/x \)</span>.</p>
+
+    <h2>L'errore da non commettere</h2>
+
+    <div class="esempio">
+      <p>Il costo <span class="matematica">\( y \)</span>, in euro, di
+      <span class="matematica">\( x \)</span> cartucce per stampante:</p>
+      \[ x:\ 1,\ 2,\ 3,\ 4 \qquad y:\ 12,\ 20,\ 28,\ 36 \]
+      <p>Al crescere di <span class="matematica">\( x \)</span> cresce anche
+      <span class="matematica">\( y \)</span>, eppure le due grandezze
+      <em>non</em> sono direttamente proporzionali:
+      <span class="matematica">\( 12/1 = 12 \)</span> mentre
+      <span class="matematica">\( 20/2 = 10 \)</span>. Il rapporto non è
+      costante, e il grafico è una retta che non passa per l'origine.</p>
+    </div>
+
+    <p>Che due grandezze crescano insieme, dunque, non basta: serve che
+    crescano <em>nello stesso rapporto</em>. Quando invece all'aumentare
+    dell'una l'altra diminuisce, si entra nel caso della
+    <strong>proporzionalità inversa</strong>.</p>
+
+  </div>
+
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>

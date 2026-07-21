@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ============================================================================
+     _template.html — TEMPLATE NORMATIVO delle voci (§ 5.7).
+     Riferimento concreto per ogni nuova voce: in caso di discrepanza tra una
+     regola del documento e questo template, si segnala al docente (§ 5.7).
+     Questo file NON è una voce e non compare sulla mappa.
+
+     Per creare una voce:
+     1. copia questo file col nome-file dell'Appendice B
+        (es. voci/1-1-2-2-cifre-significative.html);
+     2. sostituisci <title> e il titolo <h1>;
+     3. componi il corpo con i blocchi che servono: sono TUTTI facoltativi e
+        ripetibili, in qualunque ordine (§ 5.7) — gli esempi qui sotto mostrano
+        ciascun blocco una volta;
+     4. NON toccare: breadcrumb (lo genera slide.js dal nome-file), «X»,
+        blocco collegamenti, script in coda. Niente stili inline (§ 5.5).
+     Bozza (§ 5.7): guscio + titolo + segnaposto «in lavorazione».
+     ============================================================================ -->
+<title>Titolo della voce — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <!-- Breadcrumb derivato dalla struttura (§ 5.7, DoD 14): slide.js lo
+         genera dal numero-nodo nel nome-file + struttura.js. Lasciare vuoto. -->
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">Titolo della voce (Appendice B)</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Paragrafo introduttivo. L'aggancio testuale alla voce che precede o
+    segue nella sequenza logica (§ 7.1, DoD 16) vive qui, nel testo. Un
+    frammento di formula nel testo usa la classe dedicata:
+    <span class="matematica">\( v = 9{,}8\,\mathrm{m/s} \)</span> (§ 5.6).</p>
+
+    <h2>Sottotitolo di sezione (facoltativo)</h2>
+
+    <div class="definizione">
+      <p>Blocco <em>definizione</em>: l'enunciato pulito del concetto.</p>
+    </div>
+
+    <div class="formula">
+      \[ \overline{V} \pm E_a \qquad E_a = \max(S;\ \text{semidispersione}) \]
+      <p class="formula-nota">Blocco <em>formula</em>: notazione LaTeX tra
+      <code>\[ … \]</code>; questa nota a margine è facoltativa.</p>
+    </div>
+
+    <div class="esempio">
+      <p>Blocco <em>esempio</em>: un caso concreto svolto, distinto a colpo
+      d'occhio dal resto del corpo.</p>
+    </div>
+
+    <figure class="figura">
+      <svg viewBox="0 0 200 90" width="320" role="img" aria-label="Figura d'esempio del template">
+        <rect x="10" y="10" width="180" height="70" rx="8" fill="none" stroke="#155e8a" stroke-width="2"/>
+        <line x1="30" y1="65" x2="170" y2="25" stroke="#b3541e" stroke-width="2"/>
+      </svg>
+      <figcaption>Blocco <em>figura</em>: solo SVG ridisegnati ex novo, mai
+      fotografie (§ 5.4). Per i grafici: variante <code>figura--grafico</code>.</figcaption>
+    </figure>
+
+    <div class="tabella">
+      <table>
+        <caption>Blocco <em>tabella</em>: intestazioni di riga/colonna in <code>&lt;th&gt;</code>.</caption>
+        <thead>
+          <tr><th>Intestazione A</th><th>Intestazione B</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>riga 1</th><td>dato</td></tr>
+          <tr><th>riga 2</th><td>dato</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="simulazione">
+      <p>Contenitore riservato alle simulazioni interattive (§ 9): la maggior
+      parte delle voci non lo userà. Nessun iframe verso siti esterni.</p>
+    </div>
+
+  </div>
+
+  <!-- Blocco collegamenti (§ 5.7, DoD 3): due soli elementi, identici in ogni
+       voce. Niente prev/next (§ 5.2). «Esercizi» resta non-pronto finché la
+       pagina di destinazione non esiste. -->
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Multipli e sottomultipli — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">Multipli e sottomultipli</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Una stessa unità deve servire per misure di taglia molto diversa: il
+    raggio di un atomo e la distanza fra due città si esprimono entrambi in
+    metri. Scriverli con la sola unità di base costringerebbe a lunghe file di
+    zeri. Per questo ogni unità del Sistema Internazionale porta con sé una
+    famiglia di <strong>multipli</strong> e <strong>sottomultipli</strong>,
+    costruiti tutti sulle potenze del dieci.</p>
+
+    <div class="definizione">
+      <p>Un <strong>multiplo</strong> o un <strong>sottomultiplo</strong> di
+      un'unità di misura è quella stessa unità moltiplicata per una potenza
+      del <span class="matematica">\( 10 \)</span>. Il suo nome si ottiene
+      anteponendo al nome dell'unità un <strong>prefisso</strong>, che indica
+      di quale potenza si tratta.</p>
+    </div>
+
+    <div class="formula">
+      \[ 1\ \text{prefisso-unità} = 10^{n}\ \text{unità} \]
+      <p class="formula-nota">Il prefisso vale per qualunque unità: la stessa
+      tavola serve per metri, grammi, secondi, byte.</p>
+    </div>
+
+    <h2>La tavola dei prefissi</h2>
+
+    <div class="tabella">
+      <table>
+        <caption>I prefissi del Sistema Internazionale, dal più grande al più
+        piccolo.</caption>
+        <thead>
+          <tr><th>Prefisso</th><th>Simbolo</th><th>Potenza di 10</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>exa</th><td>E</td><td>\( 10^{18} \)</td></tr>
+          <tr><th>peta</th><td>P</td><td>\( 10^{15} \)</td></tr>
+          <tr><th>tera</th><td>T</td><td>\( 10^{12} \)</td></tr>
+          <tr><th>giga</th><td>G</td><td>\( 10^{9} \)</td></tr>
+          <tr><th>mega</th><td>M</td><td>\( 10^{6} \)</td></tr>
+          <tr><th>kilo</th><td>k</td><td>\( 10^{3} \)</td></tr>
+          <tr><th>etto</th><td>h</td><td>\( 10^{2} \)</td></tr>
+          <tr><th>deca</th><td>da</td><td>\( 10^{1} \)</td></tr>
+          <tr><th>unità di base</th><td>—</td><td>\( 1 \)</td></tr>
+          <tr><th>deci</th><td>d</td><td>\( 10^{-1} \)</td></tr>
+          <tr><th>centi</th><td>c</td><td>\( 10^{-2} \)</td></tr>
+          <tr><th>milli</th><td>m</td><td>\( 10^{-3} \)</td></tr>
+          <tr><th>micro</th><td>µ</td><td>\( 10^{-6} \)</td></tr>
+          <tr><th>nano</th><td>n</td><td>\( 10^{-9} \)</td></tr>
+          <tr><th>pico</th><td>p</td><td>\( 10^{-12} \)</td></tr>
+          <tr><th>femto</th><td>f</td><td>\( 10^{-15} \)</td></tr>
+          <tr><th>atto</th><td>a</td><td>\( 10^{-18} \)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="esempio">
+      <p>Leggere la tavola significa sostituire al prefisso la sua potenza:</p>
+      <p><span class="matematica">\( 1\,\mathrm{hg} = 1 \times 10^{2}\,\mathrm{g} = 100\,\mathrm{g} \)</span></p>
+      <p><span class="matematica">\( 1\,\mathrm{GB} = 1 \times 10^{9}\,\mathrm{B} = 1\,000\,000\,000\,\mathrm{B} \)</span></p>
+      <p><span class="matematica">\( 1\,\mathrm{mA} = 1 \times 10^{-3}\,\mathrm{A} = 0{,}001\,\mathrm{A} \)</span></p>
+    </div>
+
+    <h2>Il verso della conversione</h2>
+
+    <p>Le due direzioni si ricordano guardando l'esponente. Passando da un
+    sottomultiplo verso un multiplo il numero che accompagna l'unità
+    <em>diminuisce</em>, perché l'unità è diventata più grande: si moltiplica
+    per <span class="matematica">\( 10^{-n} \)</span>. Nel verso opposto il
+    numero <em>cresce</em> e si moltiplica per
+    <span class="matematica">\( 10^{n} \)</span>.</p>
+
+    <div class="esempio">
+      <p>Da millihertz a megahertz ci sono nove ordini di distanza:
+      <span class="matematica">\( \mathrm{mHz} \)</span> vale
+      <span class="matematica">\( 10^{-3} \)</span>,
+      <span class="matematica">\( \mathrm{MHz} \)</span> vale
+      <span class="matematica">\( 10^{6} \)</span>, e
+      <span class="matematica">\( -3 - 6 = -9 \)</span>. Quindi</p>
+      \[ \begin{aligned}
+         133\,300\,000\,000\,\mathrm{mHz}
+           &= 133\,300\,000\,000 \times 10^{-9}\,\mathrm{MHz} \\
+           &= 133{,}3\,\mathrm{MHz}
+         \end{aligned} \]
+      <p>La virgola si è spostata di nove posti a partire dall'ultima cifra.</p>
+    </div>
+
+    <p>Questo conteggio degli ordini è esattamente il meccanismo che regola le
+    <strong>equivalenze</strong>, dove viene trasformato in un procedimento da
+    applicare a qualunque coppia di prefissi.</p>
+
+  </div>
+
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>

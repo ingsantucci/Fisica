@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- V17 — voce di prova della Fase 0b: contenuti PROVVISORI (P-7, § 6).
+     Valida la struttura semantica e le formule "difficili" del § 5.6
+     (V ± S e V̄ ± Ea). Il testo definitivo si scrive in Fase 1 (Cowork). -->
+<title>Come si determina l'incertezza — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">Come si determina l'incertezza</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Abbiamo visto nei <em>tipi di errore</em> che ogni misura è accompagnata
+    da errori sistematici e casuali. Qui vediamo come questa incertezza si
+    scrive nel risultato, distinguendo il caso della misura eseguita una sola
+    volta da quello della misura ripetuta più volte.</p>
+
+    <h2>Misura singola</h2>
+
+    <div class="definizione">
+      <p>Se la misura viene eseguita una sola volta, l'incertezza è la
+      <strong>sensibilità</strong> <span class="matematica">\( S \)</span>
+      dello strumento, e il risultato si scrive:</p>
+    </div>
+
+    <div class="formula">
+      \[ V \pm S \]
+      <p class="formula-nota">\( V \): valore letto; \( S \): sensibilità dello strumento.</p>
+    </div>
+
+    <div class="esempio">
+      <p>Con una riga millimetrata (<span class="matematica">\( S = 0{,}1\,\mathrm{cm} \)</span>)
+      si misura la lunghezza di una matita:
+      <span class="matematica">\( L = (12{,}4 \pm 0{,}1)\,\mathrm{cm} \)</span>.</p>
+    </div>
+
+    <h2>Misura ripetuta</h2>
+
+    <div class="definizione">
+      <p>Se la misura viene ripetuta <span class="matematica">\( n \)</span> volte,
+      come valore si assume la <strong>media</strong> dei valori ottenuti e come
+      incertezza l'<strong>errore assoluto</strong>
+      <span class="matematica">\( E_a \)</span>:</p>
+    </div>
+
+    <div class="formula">
+      \[ \overline{V} \pm E_a \qquad\text{con}\qquad
+         E_a = \max\!\left(S;\ \frac{V_{\text{max}} - V_{\text{min}}}{2}\right) \]
+      <p class="formula-nota">La quantità
+      \( \frac{V_{\text{max}} - V_{\text{min}}}{2} \) è la
+      <em>semidispersione</em> dei valori misurati.</p>
+    </div>
+
+    <div class="esempio">
+      <p>Cinque misure di un tempo di caduta:
+      <span class="matematica">\( 2{,}1 \)</span>,
+      <span class="matematica">\( 2{,}3 \)</span>,
+      <span class="matematica">\( 2{,}2 \)</span>,
+      <span class="matematica">\( 2{,}4 \)</span>,
+      <span class="matematica">\( 2{,}2\,\mathrm{s} \)</span> con un cronometro di
+      sensibilità <span class="matematica">\( 0{,}1\,\mathrm{s} \)</span>.
+      Media <span class="matematica">\( \overline{V} = 2{,}24\,\mathrm{s} \)</span>;
+      semidispersione
+      <span class="matematica">\( \frac{2{,}4 - 2{,}1}{2}\,\mathrm{s} = 0{,}15\,\mathrm{s} \)</span>.
+      Risultato: <span class="matematica">\( t = (2{,}2 \pm 0{,}2)\,\mathrm{s} \)</span>.</p>
+    </div>
+
+    <p>Quando il valore di una grandezza non si legge su uno strumento ma si
+    calcola da altre misure, l'incertezza si trasferisce al risultato: è la
+    <em>propagazione delle incertezze</em>, che riguarda le misure indirette.</p>
+
+  </div>
+
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>

@@ -1,0 +1,800 @@
+/* ==========================================================================
+   stile.css — unico foglio di stile del sito (§ 5.5: nessuno stile inline)
+   Palette e tipografia come variabili in :root; palette di base provvisoria
+   (tema misurazione scientifica), rifinitura estetica in Fase 3 (§ 5.10).
+   ========================================================================== */
+
+:root {
+  /* --- Palette di base (provvisoria, § 5.10) --- */
+  --colore-sfondo: #f5f7f9;          /* carta millimetrata chiara */
+  --colore-carta: #ffffff;            /* fondo di nodi e slide */
+  --colore-inchiostro: #1c2733;       /* testo principale */
+  --colore-inchiostro-tenue: #5a6b7c; /* testo secondario, didascalie */
+  --colore-primario: #155e8a;         /* blu "strumento": bordi nodi, accenti */
+  --colore-primario-chiaro: #d7e7f2;  /* riempimenti tenui, hover */
+  --colore-accento: #b3541e;          /* ruggine: parole-legame, evidenze */
+  --colore-accento-chiaro: #f6ead9;   /* fondo tenue dei blocchi «esempio» */
+  --colore-linea: #8aa2b5;            /* linee di collegamento della mappa */
+  --colore-non-pronto: #9aa7b2;       /* stato «non pronto» (§ 5.7) */
+  --colore-bordo: #c9d4dd;
+
+  /* --- Tipografia (§ 5.11 — vincolante dalla prima slide) --- */
+  --font-titoli: "Segoe UI Semibold", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-corpo: system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* MANOPOLA UNICA della taratura in proiezione (§ 5.11): l'intera scala
+     tipografica delle slide (titoli, sottotitoli, didascalie, etichette dei
+     blocchi) deriva da --dim-corpo via calc(); per la taratura alla LIM si
+     ritocca SOLO questa riga. Le formule KaTeX seguono da sole (em). */
+  --dim-corpo: 36px;                 /* corpo slide; mai sotto 16px (§ 5.11).
+                                        36px = equilibrio misurato sul viewport
+                                        LIM (~1280px CSS): riga 60–75 caratteri
+                                        E bianco laterale ~1,5–2 cm. Alzarlo
+                                        stringe i margini, abbassarlo li allarga;
+                                        i 60–75 reggono da soli (riga in ch). */
+  --dim-didascalia: calc(var(--dim-corpo) * 0.8);    /* didascalie, breadcrumb */
+  --dim-titolo-slide: calc(var(--dim-corpo) * 1.7);  /* titolo della slide */
+  --dim-sottotitolo: calc(var(--dim-corpo) * 1.3);   /* h2 di sezione */
+  --dim-etichetta-blocco: calc(var(--dim-corpo) * 0.7); /* «Definizione», … */
+  /* Mappa: scala indipendente dalla manopola delle slide (tarature separate). */
+  --dim-etichetta-nodo: 23px;        /* ≥ 14px al livello di zoom della centratura */
+  --dim-parola-legame: 22px;         /* ≥ 14px (§ 5.11) */
+  /* Testi d'interfaccia (ricerca, avvisi, tendina annotazioni): non seguono
+     la manopola delle slide, per non gonfiare i controlli fissi. */
+  --dim-interfaccia: 18px;
+  --interlinea-corpo: 1.5;
+  /* 1ch = larghezza dello «0», ma il carattere medio del testo italiano è
+     ~0,81ch (misura § 6 su testo reale): 58ch ≈ 71 caratteri per riga.
+     Il vincolo 60–75 (§ 5.11) resta vero a QUALUNQUE valore della manopola
+     --dim-corpo, perché la colonna scala con il carattere. */
+  --larghezza-riga: 58ch;            /* ≈ 71 caratteri reali (§ 5.11: 60–75) */
+
+  /* --- Mappa: geometria dei nodi e delle linee ---
+     Valori riscalati con le etichette a 23px (testo mappa +50–60%, sessione
+     tipografica 0b): padding, spazi tra rami e livelli crescono in proporzione
+     perché il ritmo visivo resti quello validato al GATE 0a. */
+  --nodo-raggio: 8px;
+  --nodo-bordo: 2px;
+  --nodo-padding-v: 10px;
+  --nodo-padding-h: 18px;
+  --spazio-fratelli: 36px;           /* distanza orizzontale tra sotto-alberi */
+  --spazio-livelli: 88px;            /* distanza verticale genitore→figli:
+                                        ospita le parole-legame su due righe */
+  --linea-spessore: 2px;
+
+  /* --- Interfaccia --- */
+  --dim-bersaglio-tocco: 40px;       /* bersagli touch (icona >/<, pulsanti) */
+  /* Unica durata per tutte le transizioni della mappa (§ 5.3-ter e apertura/
+     chiusura dei rami): vista e rami viaggiano sullo stesso orologio.
+     Range ammesso: fino a 900ms (valore definitivo fissato dal docente al
+     GATE 0a; durata identica su ogni schermo, 60 o 120 Hz). */
+  --durata-transizione: 700ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --durata-transizione: 0ms; }
+}
+
+/* --- Base --- */
+* { box-sizing: border-box; }
+
+/* Bersagli personalizzati (cursor: pointer, affordance propria via :hover):
+   niente evidenziazione nativa WebKit. La sua rimozione non è sincronizzata
+   con le animazioni JS di apertura/chiusura dei rami — restava visibile un
+   istante sul riquadro del summary (nodo + freccia), solo con la Pencil,
+   a intermittenza (rilievo 20/07/2026). */
+button, summary, .nodo-foglia {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--colore-sfondo);
+  color: var(--colore-inchiostro);
+  font-family: var(--font-corpo);
+  font-size: var(--dim-corpo);
+  line-height: var(--interlinea-corpo);
+}
+
+h1, h2, h3 { font-family: var(--font-titoli); line-height: 1.25; }
+
+/* ==========================================================================
+   Mappa (index.html)
+   ========================================================================== */
+
+body.pagina-mappa { overflow: hidden; }
+
+/* Vista fissa a schermo intero; il "mondo" al suo interno riceve pan e zoom
+   via transform CSS (§ 5.3-ter). Nessuna barra di scorrimento. */
+#vista {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;      /* gesti gestiti dallo strato JS */
+  cursor: grab;
+}
+#vista.trascinamento { cursor: grabbing; }
+
+#mondo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  transform-origin: 0 0;
+}
+#mondo.anima { transition: transform var(--durata-transizione) ease; }
+/* Promozione a strato del compositor SOLO durante il movimento (transizione
+   della vista, gesto di pan/pinch/rotellina, motore dei rami — la classe
+   «fluida» la governa mappa.js). Un will-change permanente congelava la
+   rasterizzazione del testo alla scala ~1: a zoom alto la texture veniva
+   stirata e le etichette sfocavano. A riposo la promozione cade e il browser
+   ri-rasterizza il testo vettoriale alla scala corrente: nitido a ogni zoom,
+   con la stessa fluidità di prima durante i gesti. */
+#mondo.anima, #mondo.fluida { will-change: transform; }
+
+/* Strato SVG delle linee: dentro il contenitore trasformato (§ 5.3),
+   così pan e zoom non richiedono ricalcolo. */
+#linee {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+#linee path {
+  fill: none;
+  stroke: var(--colore-linea);
+  stroke-width: var(--linea-spessore);
+}
+
+/* Strato delle parole-legame (caselle sugli archi, § 5.3-quater).
+   Una casella senza testo non genera alcun elemento. */
+#legami { position: absolute; left: 0; top: 0; z-index: 1; }
+.parola-legame {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: var(--dim-parola-legame);
+  font-style: italic;
+  color: var(--colore-accento);
+  background: var(--colore-sfondo);
+  padding: 2px 10px;
+  border-radius: 10px;
+  /* A 22px le parole-legame lunghe in riga unica collidevano tra loro sui
+     rami affollati (§ 6): vanno a capo entro ~16ch, centrate sulla casella. */
+  width: max-content;
+  max-width: 16ch;
+  text-align: center;
+  line-height: 1.25;
+  pointer-events: none;
+}
+
+/* --- Albero (details/summary annidati, § 5.3) --- */
+#albero {
+  position: relative;
+  z-index: 2;
+  width: max-content;
+  padding: 60px;
+}
+
+/* Ogni sotto-albero (details o foglia) è largo quanto il suo contenuto;
+   il nodo sta centrato sopra la riga dei figli. */
+details.nodo, .nodo-foglia { width: max-content; }
+
+summary {
+  list-style: none;
+  display: block;
+  width: max-content;
+  margin: 0 auto;
+  cursor: default;
+}
+summary::-webkit-details-marker { display: none; }
+
+/* Corpo del nodo: bersaglio che apre la slide (§ 5.1). */
+.nodo-scatola {
+  display: block;
+  width: max-content;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--nodo-padding-v) var(--nodo-padding-h);
+  background: var(--colore-carta);
+  border: var(--nodo-bordo) solid var(--colore-primario);
+  border-radius: var(--nodo-raggio);
+  font-size: var(--dim-etichetta-nodo);
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+}
+.nodo-scatola:hover { background: var(--colore-primario-chiaro); }
+
+/* Nodi «non pronto» (§ 5.7): attenuati; l'avviso al tocco lo dà lo script. */
+.nodo-scatola:not([data-pronto]) {
+  border-color: var(--colore-non-pronto);
+  color: var(--colore-inchiostro-tenue);
+}
+
+/* Icona a freccia «>/<»: bersaglio distinto, posto SOTTO il nodo (§ 5.1):
+   «>» = espandi (nodo chiuso), «<» = chiudi (nodo aperto).
+   Glifo nudo, senza cerchio: il peso visivo che il cerchio dava è compensato
+   da corpo maggiore e grassetto (leggibilità alla LIM, riga B20). Scatola
+   32×32 e glifo 30px: riscalati in proporzione alle etichette a 23px
+   (sessione tipografica 0b); il bersaglio-tocco resta 40px via ::after
+   (§ 5.1: dimensioni del bersaglio invariate). */
+.nodo-toggle {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 6px auto 0;
+  color: var(--colore-primario);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+/* Estensione invisibile del bersaglio al minimo touch (§ 5.11 interfaccia). */
+.nodo-toggle::after {
+  content: "";
+  position: absolute;
+  inset: calc((32px - var(--dim-bersaglio-tocco)) / 2);
+}
+/* Mappa verticale (§ 5.3-quater): i glifi «>/<» sono ruotati di 90° in senso
+   orario — «>» punta in basso (i figli compaiono sotto), «<» punta in alto.
+   Solo resa visiva: i caratteri restano «>» e «<» (§ 5.1 v2.7). Il ::before
+   è item della griglia, quindi la trasformazione si applica. */
+.nodo-toggle::before { content: ">"; transform: rotate(90deg); }
+details[open] > summary .nodo-toggle::before { content: "<"; }
+/* Affordance da mouse senza reintrodurre una forma: il glifo scurisce. */
+.nodo-toggle:hover { color: var(--colore-inchiostro); }
+
+/* Riga dei figli: la mappa cresce verso il basso (§ 5.3-quater).
+   justify-content e flex-shrink non hanno effetto da fermi (larghezza
+   max-content), ma durante l'animazione di apertura/chiusura tengono il
+   contenuto alla dimensione naturale, centrato nel ritaglio: nessun
+   riflusso del testo o delle etichette KaTeX. */
+.figli {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--spazio-fratelli);
+  width: max-content;
+  margin: 0 auto;
+  padding-top: var(--spazio-livelli);
+}
+.figli > * { flex-shrink: 0; }
+
+/* Apertura/chiusura animata dei rami: la classe attiva il solo ritaglio.
+   I valori (width/height/padding-top/opacity) li scrive frame per frame il
+   motore JS di mappa.js, con progresso a timestamp: durata identica su ogni
+   frequenza di schermo e nessuna transizione CSS su proprietà di layout
+   (la cui partenza non è affidabile su tutti i motori). Il contenuto
+   interno resta a misura naturale e viene ritagliato. */
+.figli.anima-dimensioni { overflow: hidden; }
+
+/* Durante la chiusura animata il details resta aperto fino a fine
+   transizione: l'icona mostra subito «>» (il comando riflette l'intenzione). */
+details.nodo.in-chiusura > summary .nodo-toggle::before { content: ">"; }
+
+/* Evidenziazione dei risultati di ricerca (§ 5.3-bis). */
+.nodo-scatola.match {
+  outline: 3px solid var(--colore-accento);
+  outline-offset: 2px;
+}
+
+/* --- Comandi fissi (ricerca in cima, zoom senza barre) --- */
+#comandi {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+#comandi button {
+  min-width: var(--dim-bersaglio-tocco);
+  min-height: var(--dim-bersaglio-tocco);
+  border: 1px solid var(--colore-bordo);
+  border-radius: 8px;
+  background: var(--colore-carta);
+  color: var(--colore-inchiostro);
+  font-size: 18px;
+  font-family: var(--font-corpo);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(28, 39, 51, 0.15);
+}
+#comandi button:hover { background: var(--colore-primario-chiaro); }
+
+/* --- Schermata di ricerca sopra la mappa (§ 5.3-bis) --- */
+#ricerca {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;     /* la mappa sotto resta il contesto dei risultati */
+}
+#ricerca[hidden] { display: none; }
+#ricerca-barra {
+  pointer-events: auto;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--colore-carta);
+  border: 1px solid var(--colore-bordo);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(28, 39, 51, 0.25);
+  max-width: min(92vw, 560px);
+}
+#ricerca-campo {
+  font-size: var(--dim-interfaccia);
+  font-family: var(--font-corpo);
+  padding: 6px 10px;
+  border: 1px solid var(--colore-bordo);
+  border-radius: 6px;
+  width: 16em;
+  max-width: 50vw;
+}
+#ricerca-contatore {
+  font-size: var(--dim-interfaccia);
+  color: var(--colore-inchiostro-tenue);
+  white-space: nowrap;
+}
+#ricerca-chiudi {
+  min-width: var(--dim-bersaglio-tocco);
+  min-height: var(--dim-bersaglio-tocco);
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--colore-inchiostro);
+}
+
+/* --- Avviso temporaneo («voce non ancora disponibile», § 5.7) --- */
+#avviso {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: var(--colore-inchiostro);
+  color: var(--colore-carta);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: var(--dim-interfaccia);
+  box-shadow: 0 2px 10px rgba(28, 39, 51, 0.35);
+}
+#avviso[hidden] { display: none; }
+
+/* ==========================================================================
+   Pagina di approfondimento (slide, § 5.7) — guscio
+   Gerarchia tipografica § 5.11: 4 livelli (titolo / sottotitolo / corpo /
+   didascalie), riga a --larghezza-riga, interlinea --interlinea-corpo.
+   ========================================================================== */
+
+body.pagina-voce { position: relative; }
+
+/* Colonna: larghezza in ch (garanzia strutturale dei 60–75 caratteri, § 5.11);
+   spaziature in em, così scalano con la manopola --dim-corpo. Il margine
+   laterale residuo alla LIM è (viewport − colonna)/2: con corpo 32px e 70ch
+   la colonna riempie quasi tutto lo schermo (~1,5–2 cm di bianco per lato). */
+.slide {
+  max-width: calc(var(--larghezza-riga) + 1.5em);
+  margin: 0 auto;
+  padding: 0.9em 0.75em 2.25em;
+}
+
+.slide-testata { margin-bottom: 1.2em; }
+
+/* Breadcrumb (§ 5.7): statico, non cliccabile, generato da slide.js. */
+.breadcrumb {
+  font-size: var(--dim-didascalia);
+  color: var(--colore-inchiostro-tenue);
+  margin-bottom: 0.45em;
+  /* A schermo stretto (iPad verticale) la prima riga non deve correre
+     sotto la «X» fissa in alto a destra. */
+  padding-right: 72px;
+  /* Spazio riservato anche da vuoto: il titolo non salta quando il
+     breadcrumb compare (o quando è assente, V01). */
+  min-height: calc(var(--dim-didascalia) * 1.5);
+}
+.breadcrumb strong { color: var(--colore-inchiostro); font-weight: 600; }
+.breadcrumb-sep { margin: 0 7px; color: var(--colore-linea); }
+
+.slide-titolo {
+  font-size: var(--dim-titolo-slide);
+  margin: 0;
+}
+/* Filo di misura sotto il titolo: identità visiva, non un default. */
+.slide-titolo::after {
+  content: "";
+  display: block;
+  width: 2em;
+  height: 0.125em;
+  margin-top: 0.375em;
+  background: var(--colore-primario);
+  border-radius: 2px;
+}
+
+/* Guardia contro lo scroll orizzontale di pagina: nessun contenuto-limite
+   (formula inline lunghissima, parola senza spazi, SVG residuo) deve allargare
+   la pagina. `overflow-x: clip` capta il caso patologico SENZA creare un
+   contenitore di scroll e SENZA toccare lo scorrimento verticale (a differenza
+   di hidden, clip lascia `overflow-y: visible`); non interferisce con lo
+   scroll interno di .tabella/.katex-display (contenitori a sé, larghi quanto
+   la colonna) né con lo strato d'inchiostro (fuori da .slide-corpo). Le
+   formule INLINE corte restano intatte: .matematica non viene toccata, così
+   la loro linea di base non si sposta (rilievo collaudo, § 5.11). */
+.slide-corpo { overflow-x: clip; }
+
+.slide-corpo h2 {
+  font-size: var(--dim-sottotitolo);
+  margin: 1.8em 0 0.55em;
+}
+/* Parola/URL senza spazi più larghi della colonna: spezzano invece di
+   sfondare (difesa di contenuto, § 5.11). */
+.slide-corpo p { margin: 1em 0; overflow-wrap: break-word; }
+
+/* «X» di chiusura: grande, in alto a destra, colpibile al volo (§ 5.7). */
+.chiudi-x {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 40;
+  min-width: 48px;
+  min-height: 48px;
+  font-size: 26px;
+  border: 1px solid var(--colore-bordo);
+  border-radius: 10px;
+  background: var(--colore-carta);
+  color: var(--colore-inchiostro);
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(28, 39, 51, 0.15);
+}
+.chiudi-x:hover { background: var(--colore-primario-chiaro); }
+
+/* Blocco di navigazione «collegamenti» (§ 5.7): due soli elementi. */
+.collegamenti {
+  margin-top: 2.5em;
+  padding-top: 1em;
+  border-top: 1px solid var(--colore-bordo);
+  display: flex;
+  gap: 0.6em;
+}
+.collegamenti a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--dim-bersaglio-tocco);
+  padding: 8px 22px;
+  border: 1px solid var(--colore-primario);
+  border-radius: 8px;
+  background: var(--colore-carta);
+  color: var(--colore-primario);
+  text-decoration: none;
+  font-family: var(--font-titoli);
+}
+.collegamenti a:hover { background: var(--colore-primario-chiaro); }
+/* «Esercizi» non pronto (§ 5.7): attenuato; l'avviso al tocco lo dà slide.js. */
+.collegamenti a.non-pronto {
+  border-color: var(--colore-non-pronto);
+  border-style: dashed;
+  color: var(--colore-inchiostro-tenue);
+  cursor: default;
+}
+.collegamenti a.non-pronto:hover { background: var(--colore-carta); }
+
+/* ==========================================================================
+   Slide — blocchi del corpo (§ 5.7): facoltativi e ripetibili.
+   Spaziatura verticale netta tra blocchi semantici (§ 5.11).
+   ========================================================================== */
+
+/* Etichetta di blocco (definizione/esempio/simulazione): maiuscoletto. */
+.definizione::before,
+.esempio::before,
+.simulazione::before {
+  display: block;
+  font-family: var(--font-titoli);
+  font-size: var(--dim-etichetta-blocco);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.45em;
+}
+
+.definizione {
+  margin: 1.75em 0;
+  padding: 0.875em 1.25em;
+  background: var(--colore-carta);
+  border-left: 6px solid var(--colore-primario);
+  border-radius: 0 8px 8px 0;
+}
+.definizione::before { content: "Definizione"; color: var(--colore-primario); }
+.definizione p:first-of-type { margin-top: 0; }
+.definizione p:last-of-type { margin-bottom: 0; }
+
+/* Formula in blocco: centrata, senza cornice (come sui testi di fisica);
+   il distacco dal testo è dato dai margini (§ 5.11). */
+.formula {
+  margin: 1.75em 0;
+  text-align: center;
+}
+/* Le formule larghe scorrono DENTRO il blocco (come .tabella): mai scroll
+   orizzontale dell'intera pagina sui viewport stretti (iPad). Vale per ogni
+   formula a blocco del corpo, non solo dentro .formula: una \[ … \] scritta
+   direttamente in .esempio (o altro blocco) sbordava dal riquadro perché la
+   regola era agganciata al solo .formula (rilievo 20/07/2026). */
+.slide-corpo .katex-display {
+  margin: 0.4em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+/* Nota a lato della formula (facoltativa, es. legenda dei simboli). */
+.formula .formula-nota {
+  font-size: var(--dim-didascalia);
+  color: var(--colore-inchiostro-tenue);
+  margin-top: 0.25em;
+}
+
+.esempio {
+  margin: 1.75em 0;
+  padding: 0.875em 1.25em;
+  background: var(--colore-accento-chiaro);
+  border-radius: 8px;
+}
+.esempio::before { content: "Esempio"; color: var(--colore-accento); }
+.esempio p:first-of-type { margin-top: 0; }
+.esempio p:last-of-type { margin-bottom: 0; }
+
+/* Frammento di formula nel testo (§ 5.6): mai spezzato a fine riga. */
+.matematica { white-space: nowrap; }
+
+/* Figura (§ 5.7): sempre SVG ridisegnato, mai fotografie (§ 5.4). */
+.figura {
+  margin: 2em 0;
+  text-align: center;
+}
+.figura svg, .figura img { max-width: 100%; height: auto; }
+.figura figcaption {
+  font-size: var(--dim-didascalia);
+  color: var(--colore-inchiostro-tenue);
+  margin-top: 0.4em;
+}
+/* Variante per i grafici di relazioni tra grandezze (§ 5.7). */
+.figura--grafico > svg, .figura--grafico > img {
+  background: var(--colore-carta);
+  border: 1px solid var(--colore-bordo);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* Tabella (§ 5.7): dati tabellari con intestazione di riga/colonna. */
+.tabella { margin: 1.75em 0; overflow-x: auto; }
+.tabella table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+.tabella caption {
+  font-size: var(--dim-didascalia);
+  color: var(--colore-inchiostro-tenue);
+  caption-side: bottom;
+  padding-top: 0.4em;
+}
+.tabella th, .tabella td {
+  border: 1px solid var(--colore-bordo);
+  padding: 0.25em 0.5em;
+  background: var(--colore-carta);
+}
+.tabella th {
+  background: var(--colore-primario-chiaro);
+  font-family: var(--font-titoli);
+  font-weight: 600;
+}
+
+/* Contenitore riservato alle simulazioni (§ 9): blocco a sé, opzionale. */
+.simulazione {
+  margin: 1.75em 0;
+  padding: 1.25em;
+  border: 2px dashed var(--colore-bordo);
+  border-radius: 8px;
+  text-align: center;
+  color: var(--colore-inchiostro-tenue);
+}
+.simulazione::before { content: "Simulazione"; color: var(--colore-inchiostro-tenue); }
+
+/* ==========================================================================
+   Barra di annotazione (§ 5.9, v2.9) — tre pulsanti (Penna, Gomma,
+   Evidenziatore) in trasparenza al centro del bordo destro; a sinistra di
+   ciascuno il triangolo «◂» del sottomenu. Nessun timer, nessuno strumento
+   «mano». Il DOM lo genera script/annotazioni.js; qui solo l'aspetto.
+   ========================================================================== */
+
+.annota {
+  position: fixed;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  touch-action: none;          /* il pinch non parte mai dai controlli */
+}
+
+/* Una riga per strumento: [sottomenu] [◂] [pulsante], da destra. Il
+   sottomenu è in overlay assoluto: aprirlo non sposta mai i pulsanti
+   (il bersaglio resta fermo sotto la penna). */
+.annota-riga {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.annota-riga .annota-tendina {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 8px;
+  width: max-content;   /* mai lo shrink-to-fit del contenitore stretto */
+}
+
+.annota-strumento {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--colore-bordo);
+  background: var(--colore-carta);
+  opacity: 0.55;               /* in trasparenza a riposo (§ 5.9) */
+  font-size: 22px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(28, 39, 51, 0.2);
+}
+.annota-strumento:hover { opacity: 1; }
+.annota-strumento.selezionato {
+  opacity: 1;
+  background: var(--colore-primario-chiaro);
+}
+/* Evidenziatore: il glifo «▬» è un campione, colorato via inline style
+   (colore corrente dell'evidenziatore) da annotazioni.js. */
+.annota-strumento--evidenziatore { font-size: 26px; line-height: 1; }
+
+/* Triangolo del sottomenu: piccolo e trasparente; pieno quando aperto. */
+.annota-freccia {
+  min-width: 30px;
+  min-height: var(--dim-bersaglio-tocco);
+  border: none;
+  background: transparent;
+  color: var(--colore-inchiostro-tenue);
+  opacity: 0.45;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+}
+.annota-freccia:hover { opacity: 1; }
+.annota-freccia.aperta {
+  opacity: 1;
+  color: var(--colore-primario);
+  transform: rotate(180deg);   /* «◂» diventa «▸»: il sottomenu si richiude */
+}
+
+/* Sottomenu (colore+spessore, oppure modalità gomma): a sinistra del «◂». */
+.annota-tendina {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: var(--colore-carta);
+  border: 1px solid var(--colore-bordo);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(28, 39, 51, 0.25);
+  font-size: var(--dim-interfaccia);
+  color: var(--colore-inchiostro-tenue);
+}
+.annota-tendina[hidden] { display: none; }
+.annota-preset-riga { display: flex; align-items: center; gap: 8px; }
+.annota-preset {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--colore-bordo);
+  cursor: pointer;
+  padding: 0;
+}
+.annota-preset.attivo { border-color: var(--colore-inchiostro); }
+.annota-tendina input[type="color"] {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--colore-bordo);
+  border-radius: 6px;
+  background: var(--colore-carta);
+  cursor: pointer;
+}
+.annota-tendina input[type="range"] { width: 130px; }
+.annota-modo {
+  padding: 8px 12px;
+  border: 1px solid var(--colore-bordo);
+  border-radius: 8px;
+  background: var(--colore-carta);
+  font-size: var(--dim-interfaccia);
+  cursor: pointer;
+  text-align: left;
+}
+.annota-modo.selezionato {
+  background: var(--colore-primario-chiaro);
+  border-color: var(--colore-primario);
+}
+
+/* Strati dell'inchiostro (SVG vettoriale, § 5.9): mai bersaglio dei gesti.
+   overflow visibile: i tratti vivono nelle coordinate del loro spazio
+   (mondo o documento), non nel riquadro nominale dell'SVG. */
+#inchiostro-mappa, #inchiostro-slide {
+  pointer-events: none;
+  overflow: visible;
+}
+#inchiostro-mappa {                  /* dentro #mondo: segue pan e zoom */
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+}
+#inchiostro-slide {                  /* ancorato al documento: scorre con esso */
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* Misura minima (0 disabiliterebbe il rendering SVG): i tratti, in
+     coordinate di documento, si vedono per overflow e lo strato non
+     allunga mai l'area di scroll, a qualunque rotazione. */
+  width: 1px;
+  height: 1px;
+  z-index: 5;
+}
+.annota-tratto {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+/* Evidenziatore (§ 5.9 v2.9): la semitrasparenza è sull'attributo `opacity`
+   dell'ELEMENTO path (impostato da annotazioni.js), non qui — così
+   l'auto-sovrapposizione nello stesso tratto resta uniforme (anti-chiazze).
+   La classe è l'aggancio del guscio; i cap tondi restano come per la penna. */
+.annota-tratto--evidenziatore { /* aggancio; opacity inline sull'elemento */ }
+/* Con uno strumento attivo il puntatore lo dice (scenario mouse, § 5.9). */
+body.annota-penna, body.annota-penna #vista { cursor: crosshair; }
+body.annota-gomma, body.annota-gomma #vista { cursor: cell; }
+body.annota-evidenziatore, body.annota-evidenziatore #vista { cursor: crosshair; }
+
+/* ==========================================================================
+   Interfaccia agganciata al viewport visivo (script/annotazioni.js): un
+   contenitore trasformato tiene «X», barra, comandi, ricerca e avvisi
+   fissi, 1:1 e dentro l'area visibile a qualunque zoom (pinch nativo o
+   zoom di pagina del browser) — stessa impostazione della mappa: i
+   controlli vivono fuori da ciò che si trasforma.
+   ========================================================================== */
+#ancora-interfaccia {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  z-index: 100;
+  pointer-events: none;        /* mai un ostacolo per mappa e slide */
+}
+#ancora-interfaccia > * { pointer-events: auto; }
+/* La ricerca conserva il suo strato passante: i risultati si toccano
+   sulla mappa sottostante (§ 5.3-bis); la barra interna resta attiva. */
+#ancora-interfaccia > #ricerca { pointer-events: none; }
+
+/* Il pinch che inizia con le dita sopra un controllo si esaurisce lì:
+   non ridimensiona mai la pagina (bug iPad, § 5.3-ter). La barra di
+   annotazione ha la stessa regola nella sua sezione. */
+#comandi, #ricerca-barra { touch-action: none; }

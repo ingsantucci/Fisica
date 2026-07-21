@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- V19 — voce di prova della Fase 0b: contenuti PROVVISORI (P-7, § 6).
+     Valida le formule di propagazione (§ 5.6) e il blocco TABELLA (§ 5.7).
+     Il testo definitivo si scrive in Fase 1 (Cowork). -->
+<title>Come si propagano le incertezze — Mappa di Fisica</title>
+<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../script/katex/katex.min.css">
+<script defer src="../script/katex/katex.min.js"></script>
+<script defer src="../script/katex/contrib/auto-render.min.js"></script>
+<script defer src="../script/struttura.js"></script>
+<script defer src="../script/slide.js"></script>
+<script defer src="../script/annotazioni.js"></script>
+</head>
+<body class="pagina-voce">
+
+<button class="chiudi-x" type="button" aria-label="Chiudi e torna alla mappa">✕</button>
+
+<main class="slide">
+  <header class="slide-testata">
+    <nav class="breadcrumb" aria-label="Percorso nella mappa"></nav>
+    <h1 class="slide-titolo">Come si propagano le incertezze</h1>
+  </header>
+
+  <div class="slide-corpo">
+
+    <p>Nelle <em>misure indirette</em> il valore di una grandezza si calcola a
+    partire da altre grandezze misurate direttamente, ciascuna con la propria
+    incertezza. L'incertezza del risultato non si misura: si <strong>propaga</strong>
+    dalle incertezze delle grandezze di partenza, con regole diverse secondo
+    l'operazione.</p>
+
+    <div class="definizione">
+      <p>Per <strong>somma e differenza</strong>, l'errore assoluto del
+      risultato è la somma degli errori assoluti:</p>
+    </div>
+
+    <div class="formula">
+      \[ E_a(x + y) = E_a(x) + E_a(y) \qquad
+         E_a(x - y) = E_a(x) + E_a(y) \]
+    </div>
+
+    <div class="definizione">
+      <p>Per <strong>prodotto e quoziente</strong>, si somma invece l'errore
+      <em>relativo</em> <span class="matematica">\( e_r = \dfrac{E_a}{\overline{V}} \)</span>:</p>
+    </div>
+
+    <div class="formula">
+      \[ e_r(x \cdot y) = e_r(x) + e_r(y) \qquad
+         e_r\!\left(\frac{x}{y}\right) = e_r(x) + e_r(y) \]
+    </div>
+
+    <div class="tabella">
+      <table>
+        <caption>Prospetto delle regole di propagazione (contenuto provvisorio).</caption>
+        <thead>
+          <tr><th>Operazione</th><th>Cosa si somma</th><th>Regola</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>Somma \( x + y \)</th><td>errori assoluti</td>
+              <td>\( E_a(x) + E_a(y) \)</td></tr>
+          <tr><th>Differenza \( x - y \)</th><td>errori assoluti</td>
+              <td>\( E_a(x) + E_a(y) \)</td></tr>
+          <tr><th>Prodotto \( x \cdot y \)</th><td>errori relativi</td>
+              <td>\( e_r(x) + e_r(y) \)</td></tr>
+          <tr><th>Quoziente \( x / y \)</th><td>errori relativi</td>
+              <td>\( e_r(x) + e_r(y) \)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="esempio">
+      <p>Perimetro di un tavolo rettangolare con lati
+      <span class="matematica">\( a = (120{,}0 \pm 0{,}1)\,\mathrm{cm} \)</span> e
+      <span class="matematica">\( b = (80{,}0 \pm 0{,}1)\,\mathrm{cm} \)</span>:
+      il perimetro è una somma, quindi
+      <span class="matematica">\( 2p = (400{,}0 \pm 0{,}4)\,\mathrm{cm} \)</span> —
+      quattro addendi, quattro errori assoluti che si sommano.</p>
+    </div>
+
+    <p>Come si è visto per le misure dirette in <em>come si determina
+    l'incertezza</em>, anche qui il risultato si scrive sempre nella forma
+    <span class="matematica">\( \overline{V} \pm E_a \)</span>: cambia solo il
+    modo in cui l'incertezza viene ottenuta.</p>
+
+  </div>
+
+  <nav class="collegamenti" aria-label="Collegamenti">
+    <a class="collegamento-mappa" href="../index.html">Mappa</a>
+    <a class="collegamento-esercizi non-pronto" href="#">Esercizi</a>
+  </nav>
+</main>
+
+<div id="avviso" hidden></div>
+
+</body>
+</html>
